@@ -15,6 +15,10 @@ namespace Shop.Domain.CategoryAggregate
         public long? ParentId { get; private set; }
         public List<Category> Childs { get; private set; }
 
+        private Category()
+        {
+            
+        }
 
         public Category(string title, string slug, SeoData seoData, ICategoryDomainService service)
         {

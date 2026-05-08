@@ -15,6 +15,10 @@ namespace Shop.Domain.SellerAggregate
         public DateTime? LastUpdate { get; private set; }
         public List<SellerInventory> Inventories { get; private set; }
 
+        private Seller()
+        {
+            
+        }
 
         public Seller(long userId, string shopName, string nationalCode, ISellerDomainService domainService)
         {

@@ -42,6 +42,8 @@ namespace Shop.Infrastructure
             {
                 option.UseSqlServer(connectionString);
             });
+
+            
         }
     }
 

@@ -7,6 +7,11 @@ namespace Shop.Domain.UserAggregate
 {
     public class UserAddress : BaseEntity
     {
+        private UserAddress()
+        {
+            
+        }
+
         public UserAddress(string province, string city, string postalCode, string postalAddress, string name, string family, PhoneNumber phoneNumber, string nationalCode)
         {
             Guard(province, city, postalCode, postalAddress, name, family, phoneNumber, nationalCode);
