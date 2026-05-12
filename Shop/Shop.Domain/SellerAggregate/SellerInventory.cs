@@ -17,6 +17,12 @@ namespace Shop.Domain.SellerAggregate
         public int Price { get; private set; }
         public int? DiscountPercentage { get; private set; }
 
+        private SellerInventory()
+        {
+            
+        }
+
+
         public SellerInventory(long productId, int count, int price, int? Discountpercentage = null)
         {
             if (price < 1 || count < 0)

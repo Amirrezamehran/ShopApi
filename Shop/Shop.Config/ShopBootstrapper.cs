@@ -20,8 +20,6 @@ namespace Shop.Config
     {
         public static void RegisterShopDependency(this IServiceCollection services, string connectionString)
         {
-            InfrastructureBootstrapper.Init(services, connectionString);
-
             // اینجا کلا کاری با کلاسی که دادیم نداره فقط کافیه کلاس تو اون اسمبلی مورد نظرمون باشه
             // میاد خودش میگرده و چیزایی که بهش مربوط میشه رو خودش پیدا میکنه و کاراشو میکنه
             // است IRequestHandler و IRequest چیزایی که بهش مربوطه شامل
@@ -35,8 +33,18 @@ namespace Shop.Config
 
             // اینجاهم مثل توضیحات بالاس
             services.AddValidatorsFromAssembly(typeof(CreateRoleCommandValidator).Assembly);
+
+            // این خط حتما باید آخر نوشته بشه چون اول باید تمام مقادیر این صفحه رو اینجکت کنه
+            // و سرویس رو بده تا مقادیر داخل InfrastructureBootstrapper.Init بعد بره داخل
+            // کنه Migration اونجاهم اینجکت بشه و بعد بتونه دیتابیس رو
+            InfrastructureBootstrapper.Init(services, connectionString);
         }
 
     } // End Class
 
-} 
+}
+
+
+
+
+

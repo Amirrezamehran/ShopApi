@@ -17,6 +17,7 @@ builder.Services.RegisterShopDependency(connectionString);
 CommonBootstrapper.Init(builder.Services);
 builder.Services.AddTransient<IFileService, FileService>();
 
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.

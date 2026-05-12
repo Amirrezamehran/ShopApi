@@ -30,7 +30,8 @@ namespace Shop.Domain.OrderAggregate
         public OrderDiscount? Discount { get; private set; }
         public OrderAddress? Address { get; private set; }
         public OrderShippingMethod? ShippingMethod { get; private set; }
-        public DateTime LastUpdate { get; set; }
+        public DateTime? LastUpdate { get; set; }
+
         public int TotalPrice
         {
             get

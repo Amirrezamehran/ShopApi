@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Design;
 using Shop.Domain.CategoryAggregate;
 using Shop.Domain.CommentAggregate;
 using Shop.Domain.OrderAggregate;
@@ -13,9 +14,11 @@ namespace Shop.Infrastructure.Persistent.Ef
 {
     public class ShopContext : DbContext
     {
+      
+
         public ShopContext(DbContextOptions<ShopContext> options) : base(options)
         {
-            
+
         }
 
         public DbSet<Category> Categories { get; set; }
@@ -24,9 +27,12 @@ namespace Shop.Infrastructure.Persistent.Ef
         public DbSet<Product> Products { get; set; }
         public DbSet<Role> Roles { get; set; }
         public DbSet<Seller> Sellers { get; set; }
+        public DbSet<SellerInventory> Inventories { get; set; }
         public DbSet<Banner> Banners { get; set; }
         public DbSet<Slider> Sliders { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<ShippingMethod> ShippingMethods { get; set; }
+        
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {

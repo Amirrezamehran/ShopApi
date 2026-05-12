@@ -15,7 +15,7 @@ namespace Shop.Query.Orders.DTOs
         public OrderDiscount? Discount { get; set; }
         public OrderAddress? Address { get; set; }
         public OrderShippingMethod? ShippingMethod { get; set; }
-        public DateTime LastUpdate { get; set; }
+        public DateTime? LastUpdate { get; set; }
     }
 
     public class OrderItemDto : BaseDto
@@ -29,13 +29,6 @@ namespace Shop.Query.Orders.DTOs
         public int Count { get; set; }
         public int Price { get; set; }
         public int TotalPrice => Price * Count;
-    }
-
-    public class ProductOrderItem
-    {
-        public string ProductTitle { get; set; }
-        public string ProductSlug { get; set; }
-        public string ProductImageName { get; set; }
     }
 
     public class OrderFilterData : BaseDto

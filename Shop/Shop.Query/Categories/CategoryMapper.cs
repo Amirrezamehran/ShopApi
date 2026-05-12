@@ -3,7 +3,7 @@ using Shop.Query.Categories.DTOs;
 
 namespace Shop.Query.Categories
 {
-    internal static class CategoryMapper
+    public static class CategoryMapper
     {
         public static CategoryDto Map(this Category? category)
         {

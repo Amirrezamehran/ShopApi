@@ -11,6 +11,7 @@ namespace Shop.Infrastructure.Persistent.Ef.OrderAggregate
         {
             builder.ToTable("Orders", "order");
 
+
             // استفاده کنیم OwnsOne اگر رابطه یک به یک بود باید از
             // فقط یک تخفیف دارد Order مثلا هر
             builder.OwnsOne(o => o.Discount, option =>
@@ -30,6 +31,8 @@ namespace Shop.Infrastructure.Persistent.Ef.OrderAggregate
                 // میکنیم ToTable حساب میشن رو میایم اینجوری Aggregate فقط فیلد هایی که جزئی از
                 // و باقی فیلدهارو فقط ویژگی هاشونو مشخص میکنیم و همچنین نوع رابطشون که چند به چندن یا یک به چند
                 option.ToTable("Items", "order");
+                option.HasKey(b => b.Id);
+
             });
 
             builder.OwnsOne(o => o.Address, option =>

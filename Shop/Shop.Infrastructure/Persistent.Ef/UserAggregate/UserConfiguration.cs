@@ -57,6 +57,7 @@ namespace Shop.Infrastructure.Persistent.Ef.UserAggregate
             {
                 option.HasIndex(b => b.UserId);
                 option.ToTable("Addresses", "user");
+                option.HasKey(b => b.Id);
 
                 option.Property(b => b.Province)
                      .IsRequired().HasMaxLength(100);
@@ -88,6 +89,8 @@ namespace Shop.Infrastructure.Persistent.Ef.UserAggregate
             builder.OwnsMany(b => b.Wallets, option =>
             {
                 option.ToTable("Wallets", "user");
+                option.HasKey(b => b.Id);
+
                 option.HasIndex(b => b.UserId);
 
                 option.Property(b => b.Description)
@@ -98,6 +101,7 @@ namespace Shop.Infrastructure.Persistent.Ef.UserAggregate
             builder.OwnsMany(b => b.Roles, option =>
             {
                 option.ToTable("Roles", "user");
+                option.HasKey(b => b.Id);
                 option.HasIndex(b => b.UserId);
             });
 

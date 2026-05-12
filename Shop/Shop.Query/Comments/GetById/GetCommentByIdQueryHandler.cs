@@ -5,7 +5,7 @@ using Shop.Query.Comments.DTOs;
 
 namespace Shop.Query.Comments.GetById
 {
-    internal class GetCommentByIdQueryHandler : IQueryHandler<GetCommentByIdQuery, CommentDto?>
+    public class GetCommentByIdQueryHandler : IQueryHandler<GetCommentByIdQuery, CommentDto?>
     {
         private readonly ShopContext _context;
         public GetCommentByIdQueryHandler(ShopContext context)

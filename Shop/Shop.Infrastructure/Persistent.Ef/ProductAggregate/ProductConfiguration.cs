@@ -6,28 +6,52 @@ namespace Shop.Infrastructure.Persistent.Ef.ProductAggregate
 {
     internal class ProductConfiguration : IEntityTypeConfiguration<Product>
     {
+
         public void Configure(EntityTypeBuilder<Product> builder)
         {
             builder.ToTable("Products", "product");
 
             // ایندکس کردیم که سریعتر سرچ بشه و اینکه یونیک کردیم تا تکراری نتونه کسی وارد کنه
-            builder.HasIndex(p => p.Slug).IsUnique();
+            builder.HasIndex(b => b.Slug).IsUnique();
 
-            builder.Property(p => p.Title).HasMaxLength(50).IsRequired();
-            builder.Property(p => p.Description).IsRequired();
-            builder.Property(p => p.ImageName).HasMaxLength(150).IsRequired();
+            builder.Property(b => b.Title)
+                .IsRequired()
+                .HasMaxLength(200);
+            builder.Property(b => b.Description)
+                .IsRequired();
+
+            builder.Property(b => b.ImageName)
+                .IsRequired()
+                .HasMaxLength(150);
 
             // چون مطمعنیم اسلاگ فقط با حروف انگلیسی وارد میشه امدیم قابلیت چندزبانه ثبت شدن این فیلدو غیرفعال کردیم
-            builder.Property(p => p.Slug).IsRequired().IsUnicode(false);
+            builder.Property(b => b.Slug)
+                .IsRequired()
+                .IsUnicode(false);
 
-            builder.OwnsOne(p => p.SeoData, option =>
+            builder.OwnsOne(b => b.SeoData, config =>
             {
-                option.Property(p => p.MetaTitle).HasMaxLength(500).HasColumnName("MetaTitle");
-                option.Property(p => p.MetaDescription).HasMaxLength(500).HasColumnName("MetaDescription");
-                option.Property(p => p.MetaKeywords).HasMaxLength(500).HasColumnName("MetaKeywords");
-                option.Property(p => p.IndexPage).HasMaxLength(500).HasColumnName("IndexPage");
-                option.Property(p => p.Canonical).HasMaxLength(500).HasColumnName("Canonical");
-                option.Property(p => p.Schema).HasMaxLength(500).HasColumnName("Schema");
+                config.Property(b => b.MetaDescription)
+                    .HasMaxLength(500)
+                    .HasColumnName("MetaDescription");
+
+                config.Property(b => b.MetaTitle)
+                    .HasMaxLength(500)
+                    .HasColumnName("MetaTitle");
+
+                config.Property(b => b.MetaKeywords)
+                    .HasMaxLength(500)
+                    .HasColumnName("MetaKeyWords");
+
+                config.Property(b => b.IndexPage)
+                    .HasColumnName("IndexPage");
+
+                config.Property(b => b.Canonical)
+                    .HasMaxLength(500)
+                    .HasColumnName("Canonical");
+
+                config.Property(b => b.Schema)
+                    .HasColumnName("Schema");
 
                 // این کد زیر فقط مثاله که از خودم درآوردم تا توضیح بدم
                 // اگر به فرض هر کدوم از پراپرتی هایی که تعریف کردیم خودش یک رابطه
@@ -41,24 +65,36 @@ namespace Shop.Infrastructure.Persistent.Ef.ProductAggregate
                 //    option.Property(p => p.Title).HasMaxLength(500).HasColumnName("Canonical");
                 //    option.Property(p => p.Count).HasMaxLength(500).HasColumnName("Schema");
                 //});
-
             });
 
-
-            builder.OwnsMany(p => p.Images, option =>
+            builder.OwnsMany(b => b.Images, option =>
             {
-                builder.ToTable("Images", "product");
-                
-                option.Property(p => p.ImageName).HasMaxLength(150).IsRequired();
+                option.ToTable("Images", "product");
+                option.HasKey(b => b.Id);
+
+                option.Property(b => b.ImageName)
+                    .IsRequired()
+                    .HasMaxLength(100);
             });
 
-            builder.OwnsMany(p => p.Specifications, option =>
+
+            builder.OwnsMany(b => b.Specifications, option =>
             {
-                builder.ToTable("Specifications", "product");
 
-                option.Property(p => p.Key).HasMaxLength(50).IsRequired();
-                option.Property(p => p.Value).HasMaxLength(100).IsRequired();
+                // بذاریم دوتا جدول جدید میسازه و شدیدا خرابکاری میشه builder بیایم option اگر اشتباهی بجای این
+                option.ToTable("Specifications", "product");
+
+                option.HasKey(b => b.Id);
+
+                option.Property(b => b.Key)
+                    .IsRequired()
+                    .HasMaxLength(50);
+
+                option.Property(b => b.Value)
+                    .IsRequired()
+                    .HasMaxLength(100);
             });
+
 
         }
 

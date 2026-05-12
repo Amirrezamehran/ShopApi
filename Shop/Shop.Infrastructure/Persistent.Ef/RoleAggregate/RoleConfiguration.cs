@@ -16,6 +16,7 @@ namespace Shop.Infrastructure.Persistent.Ef.RoleAggregate
             builder.OwnsMany(b => b.Permissions, option =>
             {
                 option.ToTable("Permissions", "role");
+                option.HasKey(b => b.Id);
             });
         }
     }

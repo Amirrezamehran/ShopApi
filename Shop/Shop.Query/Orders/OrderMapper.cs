@@ -16,7 +16,7 @@ namespace Shop.Query.Orders
                 UserId = order.UserId,
                 UserFullname = "",
                 Status = order.Status,
-                Items = new List<OrderItemDto>(),
+                Items = new(),
                 Discount = order.Discount,
                 Address = order.Address,
                 ShippingMethod = order.ShippingMethod,
@@ -28,6 +28,9 @@ namespace Shop.Query.Orders
         public static async Task<List<OrderItemDto>> GetOrderItems(this OrderDto orderDto, DapperContext dapperContext)
         {
             using var connection = dapperContext.CreateConnection();
+
+            // داشته باشیم OrderItemDto چیزایی که میگیم سلکت کن بهمون برگردون باید دقیقا پراپرتی هاشو توی
+            // بشه OrderItemDto که بتونه بریزه داخلش و تبدیل به
             var sql = @$"SELECT s.ShopName, o.OrderId, o.InventoryId, o.Count, o.Price,
                         p.Title as ProductTitle , p.Slug as ProductSlug ,
                           p.ImageName as ProductImageName
@@ -37,6 +40,7 @@ namespace Shop.Query.Orders
                         Inner Join {dapperContext.Sellers} s on i.SellerId=s.Id
                         where o.OrderId=@orderId";
 
+            
             var result = await connection.QueryAsync<OrderItemDto>(sql, new { orderId = orderDto.Id });
                         
             return result.ToList();
