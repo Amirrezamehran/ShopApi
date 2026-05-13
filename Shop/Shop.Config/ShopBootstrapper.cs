@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Shop.Application._Utilities;
 using Shop.Application.Categories;
 using Shop.Application.Products;
+using Shop.Application.Products.Create;
 using Shop.Application.Roles.Create;
 using Shop.Application.Sellers;
 using Shop.Application.Users;
@@ -23,8 +24,18 @@ namespace Shop.Config
             // اینجا کلا کاری با کلاسی که دادیم نداره فقط کافیه کلاس تو اون اسمبلی مورد نظرمون باشه
             // میاد خودش میگرده و چیزایی که بهش مربوط میشه رو خودش پیدا میکنه و کاراشو میکنه
             // است IRequestHandler و IRequest چیزایی که بهش مربوطه شامل
-            services.AddMediatR(typeof(Directories).Assembly);
-            services.AddMediatR(typeof(GetCategoryByIdQuery).Assembly);
+            services.AddMediatR(cfg =>
+            {
+                cfg.RegisterServicesFromAssembly(typeof(Directories).Assembly);
+            });
+
+            // باید اینجوری اینجکت کنیم سرویس هاشو MediatR14 تو ورژن
+            services.AddMediatR(cfg =>
+            {
+                cfg.RegisterServicesFromAssembly(typeof(GetCategoryByIdQuery).Assembly);
+            });
+            //services.AddMediatR(typeof(Directories).Assembly);
+            //services.AddMediatR(typeof(GetCategoryByIdQuery).Assembly);
 
             services.AddTransient<ICategoryDomainService, CategoryDomainService>();
             services.AddTransient<IProductDomainService, ProductDomainService>();

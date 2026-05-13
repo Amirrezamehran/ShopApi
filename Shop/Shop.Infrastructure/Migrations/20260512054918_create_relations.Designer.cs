@@ -12,7 +12,7 @@ using Shop.Infrastructure.Persistent.Ef;
 namespace Shop.Infrastructure.Migrations
 {
     [DbContext(typeof(ShopContext))]
-    [Migration("20260512001954_create_relations")]
+    [Migration("20260512054918_create_relations")]
     partial class create_relations
     {
         /// <inheritdoc />

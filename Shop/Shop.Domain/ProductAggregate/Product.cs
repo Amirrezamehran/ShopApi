@@ -3,11 +3,7 @@ using Common.Domain.Exceptions;
 using Common.Domain.utilities;
 using Shop.Domain.ProductAggregate.Services;
 using Shop.Domain.ProductAggregate.ValueObjects;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+
 
 namespace Shop.Domain.ProductAggregate
 {
@@ -18,7 +14,7 @@ namespace Shop.Domain.ProductAggregate
         public string Description { get; private set; }
         public long CategoryId { get; private set; }
         public long SubCategoryId { get; private set; }
-        public long SecondarySubCategoryId { get; private set; }
+        public long? SecondarySubCategoryId { get; private set; }
         public string Slug { get; private set; }
         public SeoData SeoData { get; private set; }
         public List<ProductImage> Images { get; private set; }
@@ -31,7 +27,7 @@ namespace Shop.Domain.ProductAggregate
         }
 
         public Product(string title, string imageName, string description, long categoryId, long subCategoryId, 
-            long secondarySubCategoryId, string slug, SeoData seoData, IProductDomainService domainService)
+            long? secondarySubCategoryId, string slug, SeoData seoData, IProductDomainService domainService)
         {
 
             NullOrEmptyDomainDataException.CheckString(imageName, nameof(imageName));

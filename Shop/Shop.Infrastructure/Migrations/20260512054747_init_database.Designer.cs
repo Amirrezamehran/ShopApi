@@ -12,7 +12,7 @@ using Shop.Infrastructure.Persistent.Ef;
 namespace Shop.Infrastructure.Migrations
 {
     [DbContext(typeof(ShopContext))]
-    [Migration("20260512001714_init_database")]
+    [Migration("20260512054747_init_database")]
     partial class init_database
     {
         /// <inheritdoc />
