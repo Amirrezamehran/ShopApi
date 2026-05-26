@@ -1,12 +1,20 @@
-﻿using Shop.Domain.CategoryAggregate.Services;
+﻿using Shop.Domain.CategoryAggregate.Repository;
+using Shop.Domain.CategoryAggregate.Services;
 
 namespace Shop.Application.Categories
 {
     public class CategoryDomainService : ICategoryDomainService
     {
+        private readonly ICategoryRepository _repository;
+
+        public CategoryDomainService(ICategoryRepository repository)
+        {
+            _repository = repository;
+        }
+
         public bool IsSlugExist(string slug)
         {
-            throw new NotImplementedException();
+            return _repository.Exists(s => s.Slug == slug);
         }
     }
 }

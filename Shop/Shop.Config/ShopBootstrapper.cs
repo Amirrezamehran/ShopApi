@@ -13,6 +13,7 @@ using Shop.Domain.ProductAggregate.Services;
 using Shop.Domain.SellerAggregate.Services;
 using Shop.Domain.UserAggregate.Services;
 using Shop.Infrastructure;
+using Shop.Presentation.Facade;
 using Shop.Query.Categories.GetById;
 
 namespace Shop.Config
@@ -49,6 +50,8 @@ namespace Shop.Config
             // و سرویس رو بده تا مقادیر داخل InfrastructureBootstrapper.Init بعد بره داخل
             // کنه Migration اونجاهم اینجکت بشه و بعد بتونه دیتابیس رو
             InfrastructureBootstrapper.Init(services, connectionString);
+            services.InitFacadeDependency();
+
         }
 
     } // End Class

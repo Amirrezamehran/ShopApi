@@ -17,7 +17,7 @@ namespace Shop.Domain.CategoryAggregate
 
         private Category()
         {
-            
+            Childs = new List<Category>(); // مقداردهی اولیه نکنیم خطا میده
         }
 
         public Category(string title, string slug, SeoData seoData, ICategoryDomainService service)
@@ -27,6 +27,7 @@ namespace Shop.Domain.CategoryAggregate
             Title = title;
             Slug = slug;
             SeoData = seoData;
+            Childs = new List<Category>(); // مقداردهی اولیه نکنیم خطا میده
         }
 
         public void Edit(string title, string slug, SeoData seoData, ICategoryDomainService service)

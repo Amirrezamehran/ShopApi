@@ -29,6 +29,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shop.Api", "Shop\Shop.Api\S
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Shop.Config", "Shop\Shop.Config\Shop.Config.csproj", "{F1A35A4E-70C8-48CF-86B3-66ABE679D35B}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common.AspNetCore", "Common\Common.AspNetCore\Common.AspNetCore.csproj", "{93E138AF-B80C-4F56-B966-A9D080E34591}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -75,6 +77,10 @@ Global
 		{F1A35A4E-70C8-48CF-86B3-66ABE679D35B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F1A35A4E-70C8-48CF-86B3-66ABE679D35B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F1A35A4E-70C8-48CF-86B3-66ABE679D35B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{93E138AF-B80C-4F56-B966-A9D080E34591}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{93E138AF-B80C-4F56-B966-A9D080E34591}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{93E138AF-B80C-4F56-B966-A9D080E34591}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{93E138AF-B80C-4F56-B966-A9D080E34591}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -91,6 +97,7 @@ Global
 		{C074423E-CA45-45A4-BFAB-56B22DB9B024} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
 		{EECBBBB6-BF2B-4DD9-BC61-5B3230A675FC} = {C074423E-CA45-45A4-BFAB-56B22DB9B024}
 		{F1A35A4E-70C8-48CF-86B3-66ABE679D35B} = {02EA681E-C7D8-13C7-8484-4AC65E1B71E8}
+		{93E138AF-B80C-4F56-B966-A9D080E34591} = {571814F8-79F8-4B81-AFFB-97EF9F42F37D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F23996BE-885B-41B8-B82B-62E1EBA8B07B}

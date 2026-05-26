@@ -11,6 +11,7 @@ namespace Shop.Query.Roles
             {
                 Id = role.Id,
                 Title = role.Title,
+                // بخوایم مپ کنیم اینجوری باید بنویسیم Enum وقتی یک لیست از
                 Permissions = role.Permissions.Select(r => r.Permissions).ToList(),
                 CreationDate = role.CreationDate
             };

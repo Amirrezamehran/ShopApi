@@ -18,6 +18,7 @@ namespace Shop.Query.Comments.GetByFilter
         {
             var @params = request.FilterParams;
 
+            // کامنتو براساس تاریخ مرتب کردیم که جدیدترین کامنت ها بیان بالا و همه ببینن
             var result = _context.Comments.OrderByDescending(com => com.CreationDate).AsQueryable();
 
             if (@params.UserId != null)
@@ -38,7 +39,6 @@ namespace Shop.Query.Comments.GetByFilter
             {
                 Data = await result.Skip(skip).Take(@params.Take).Select(comment => comment.MapFilterComment()).ToListAsync(cancellationToken),
                 FilterParams = @params
-                
             };
 
             model.GeneratePaging(result, @params.Take, @params.PageId);

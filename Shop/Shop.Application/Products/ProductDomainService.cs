@@ -1,12 +1,20 @@
-﻿using Shop.Domain.ProductAggregate.Services;
+﻿using Shop.Domain.ProductAggregate.Repository;
+using Shop.Domain.ProductAggregate.Services;
 
 namespace Shop.Application.Products
 {
     public class ProductDomainService : IProductDomainService
     {
+        private readonly IProductRepository _repository;
+
+        public ProductDomainService(IProductRepository repository)
+        {
+            _repository = repository;
+        }
+
         public bool SlugIsExists(string slug)
         {
-            throw new NotImplementedException();
+            return _repository.Exists(s => s.Slug == slug);
         }
     }
 }

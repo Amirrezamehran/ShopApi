@@ -1,0 +1,75 @@
+﻿using AutoMapper;
+using Common.AspNetCore;
+using Microsoft.AspNetCore.Mvc;
+using Shop.Api.ViewModels.Users;
+using Shop.Application.Users.AddAddress;
+using Shop.Application.Users.DeleteAddress;
+using Shop.Application.Users.EditAddress;
+using Shop.Presentation.Facade.Users.Addresses;
+using Shop.Query.Users.DTOs;
+
+namespace Shop.Api.Controllers
+{
+    public class UserAddressController : ApiController
+    {
+        private readonly IUserAddressFacade _userAddress;
+        private readonly IMapper _mapper;
+
+        public UserAddressController(IUserAddressFacade userAddress, IMapper mapper)
+        {
+            _userAddress = userAddress;
+            _mapper = mapper;
+        }
+
+
+        [HttpGet]
+        public async Task<ApiResult<List<AddressDto>>> GetList()
+        {
+            // کاربر برای گرفتن لیست آدرس هاش استفاده کردیم Claim اینجا اومدیم وقتی کاربر لاگین کرد از خود
+            // یعنی وقتی لاگین میکنه آیدی کاربر رو میگیریم و باهاش آدرس های همین کاربر رو بالا میاریم
+            var result = await _userAddress.GetUserAddressList(User.GetUserId());
+            return QueryResult(result);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<ApiResult<AddressDto?>> GetById(long id)
+        {
+            var result = await _userAddress.GetUserAddressById(id);
+            return QueryResult(result);
+        }
+
+        [HttpPost]
+        public async Task<ApiResult> AddAddress(AddUserAddressViewModel viewModel)
+        {
+            var command = _mapper.Map<AddUserAddressCommand>(viewModel);
+            command.UserId = User.GetUserId();
+            var result = await _userAddress.AddUserAddress(command);
+            return CommandResult(result);
+        }
+
+        [HttpPut]
+        public async Task<ApiResult> Edit(EditUserAddressViewModel viewModel)
+        {
+            var command = _mapper.Map<EditUserAddressCommand>(viewModel);
+            command.UserId = User.GetUserId();
+            var result = await _userAddress.EditUserAddress(command);
+            return CommandResult(result);
+        }
+
+        [HttpDelete("{addressId}")]
+        public async Task<ApiResult> Delete(long addressId)
+        {
+            var result = await _userAddress.DeleteUserAddress(new DeleteUserAddressCommand(User.GetUserId(), addressId));
+            return CommandResult(result);
+        }
+
+        //[HttpPut("SetActiveAddress/{addressId}")]
+        //public async Task<ApiResult> SetAddressActive(long addressId)
+        //{
+        //    var command = new SetActiveUserAddressCommand(User.GetUserId(), addressId);
+
+        //    var result = await _userAddress.SetActiveAddress(command);
+        //    return CommandResult(result);
+        //}
+    }
+}

@@ -68,7 +68,7 @@ namespace Shop.Query.Products
         public static async Task SetCategories(this ProductDto productDto, ShopContext Context)
         {
             // اومدیم آیدی های کتگوری و زیرمجموعه هاشو دادیم و اینجاهم براساس اون آیدی ها عمل میکنن Map انتهای تابع
-            var category = await Context.Categories.Where(c => c.Id == productDto.Category.Id)
+            var categories = await Context.Categories.Where(c => c.Id == productDto.Category.Id || c.Id == productDto.SubCategory.Id)
                     .Select(p => new ProductCategoryDto()
                     {
                         Id = p.Id,
@@ -77,19 +77,20 @@ namespace Shop.Query.Products
                         Slug= p.Slug,
                         SeoData = p.SeoData
 
-                    }).FirstOrDefaultAsync();
+                    }).ToListAsync();
 
+            
+            // اینو با بالایی یکی کردیم اینجوری خیلی سرعت میره بالاتر و کد کمتریم مینویسیم
+            //var subCategory = await Context.Categories.Where(c => c.Id == productDto.SubCategory.Id)
+            //        .Select(p => new ProductCategoryDto()
+            //        {
+            //            Id = p.Id,
+            //            ParentId = p.ParentId,
+            //            Title = p.Title,
+            //            Slug= p.Slug,
+            //            SeoData = p.SeoData
 
-            var subCategory = await Context.Categories.Where(c => c.Id == productDto.SubCategory.Id)
-                    .Select(p => new ProductCategoryDto()
-                    {
-                        Id = p.Id,
-                        ParentId = p.ParentId,
-                        Title = p.Title,
-                        Slug= p.Slug,
-                        SeoData = p.SeoData
-
-                    }).FirstOrDefaultAsync();
+            //        }).FirstOrDefaultAsync();
 
 
             if (productDto.SecondarySubCategory != null)
@@ -110,11 +111,11 @@ namespace Shop.Query.Products
             }
 
 
-            if (category != null)
-                productDto.Category = category;
+            if (categories != null)
+                productDto.Category = categories.First(c => c.Id == productDto.Category.Id);
 
-            if (subCategory != null)
-                productDto.SubCategory = subCategory;
+            if (categories != null)
+                productDto.SubCategory = categories.First(c => c.Id == productDto.SubCategory.Id);
 
         }
 
