@@ -11,7 +11,7 @@ namespace Shop.Domain.UserAggregate
     {
         private User()
         {
-            
+
         }
 
         public User(string name, string family, string phoneNumber, string email, string password, Gender gender, IUserDomainService userDomainService)
@@ -24,6 +24,7 @@ namespace Shop.Domain.UserAggregate
             Password = password;
             Gender = gender;
             AvatarName = "avatar.png";
+            IsActive = true;
         }
 
         public string Name { get; private set; }
@@ -32,6 +33,7 @@ namespace Shop.Domain.UserAggregate
         public string Email { get; private set; }
         public string Password { get; private set; }
         public string AvatarName { get; private set; }
+        public bool IsActive { get; private set; }
         public Gender Gender { get; private set; }
         public List<UserRole> Roles { get; private set; }
         public List<UserAddress> Addresses { get; private set; }
@@ -81,7 +83,7 @@ namespace Shop.Domain.UserAggregate
             }
 
             oldAddress.EditAddress(address.Province, address.City, address.PostalCode, address.PostalAddress, address.Name
-                            ,address.Family, address.PhoneNumber, address.NationalCode);
+                            , address.Family, address.PhoneNumber, address.NationalCode);
         }
 
         public void DeleteAddress(long address)
@@ -111,17 +113,19 @@ namespace Shop.Domain.UserAggregate
         private void Guard(string phoneNumber, string email, IUserDomainService userDomainService)
         {
             NullOrEmptyDomainDataException.CheckString(phoneNumber, nameof(phoneNumber));
-            NullOrEmptyDomainDataException.CheckString(email, nameof(email));
+            // تو این پروژه اینو نمیخوام چون ثبت نام با ایمیل نداریم در این پروژه
+            //NullOrEmptyDomainDataException.CheckString(email, nameof(email));
 
-            if (phoneNumber != "11")
+            if (phoneNumber.Length != 11)
             {
                 throw new InvalidDomainDataException("شماره موبایل نامعتبر است");
             }
 
-            if (email.IsValidEmail() == false)
-            {
-                throw new InvalidDomainDataException("ایمیل نامعتبر است");
-            }
+            if (!string.IsNullOrWhiteSpace(email))
+                if (email.IsValidEmail() == false)
+                {
+                    throw new InvalidDomainDataException("ایمیل نامعتبر است");
+                }
 
             if (phoneNumber != PhoneNumber)
             {
@@ -131,7 +135,7 @@ namespace Shop.Domain.UserAggregate
                 }
             }
 
-            if (email.IsValidEmail() == false)
+            if (email != Email)
             {
                 if (userDomainService.IsEmailExist(email))
                 {

@@ -1,7 +1,8 @@
-using Common.Application;
+﻿using Common.Application;
 using Common.Application.FileUtil.Interfaces;
 using Common.Application.FileUtil.Services;
 using Common.AspNetCore.Middlewares;
+using Shop.Api.Infrastructure.JwtUtility;
 using Shop.Config;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -18,6 +19,8 @@ builder.Services.RegisterShopDependency(connectionString);
 CommonBootstrapper.Init(builder.Services);
 builder.Services.AddTransient<IFileService, FileService>();
 
+// ما کانفیگ شد JWT به این صورت توکن
+builder.Services.AddJwtAuthentication(builder.Configuration);
 
 var app = builder.Build();
 
@@ -29,6 +32,8 @@ app.UseSwaggerUI();
 
 app.UseHttpsRedirection();
 
+// برای اینکه احراز هویت هنگام لاگین فعال بشه اینو باید بنویسیم اینجا
+app.UseAuthentication();
 app.UseAuthorization();
 app.UseApiCustomExceptionHandler();
 app.MapControllers();
