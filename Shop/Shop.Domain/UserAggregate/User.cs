@@ -2,7 +2,6 @@
 using Common.Domain.Exceptions;
 using Shop.Domain.UserAggregate.Enums;
 using Shop.Domain.UserAggregate.Services;
-using System;
 
 
 namespace Shop.Domain.UserAggregate
@@ -25,6 +24,10 @@ namespace Shop.Domain.UserAggregate
             Gender = gender;
             AvatarName = "avatar.png";
             IsActive = true;
+            Roles = new List<UserRole>();
+            Addresses = new List<UserAddress>();
+            Wallets = new List<Wallet>();
+            Tokens = new List<UserToken>();
         }
 
         public string Name { get; private set; }
@@ -38,12 +41,13 @@ namespace Shop.Domain.UserAggregate
         public List<UserRole> Roles { get; private set; }
         public List<UserAddress> Addresses { get; private set; }
         public List<Wallet> Wallets { get; private set; }
+        public List<UserToken> Tokens { get; private set; }
 
 
 
         public static User RegisterUser(string phoneNumber, string password, IUserDomainService userDomainService)
         {
-            return new User("", "", phoneNumber, password, null, Gender.None, userDomainService);
+            return new User("", "", phoneNumber, null, password, Gender.None, userDomainService);
         }
 
         public void SetAvatar(string imageName)
@@ -110,6 +114,26 @@ namespace Shop.Domain.UserAggregate
             Roles.AddRange(roles);
         }
 
+        public void AddToken(string hashJwtToken, string hashRefreshToken, DateTime tokenExpireDate, DateTime refreshTokenExpireDate, string device)
+        {
+            var activeTokenCount = Tokens.Count(c => c.RefreshTokenExpireDate > DateTime.Now);
+            if (activeTokenCount == 3)
+                throw new InvalidDomainDataException("امکان استفاده از 4 دستگاه همزمان وجود ندارد");
+
+            var token = new UserToken(hashJwtToken, hashRefreshToken, tokenExpireDate, refreshTokenExpireDate, device);
+            token.UserId = Id;
+            Tokens.Add(token);
+        }
+
+        public void RemoveToken(long tokenId)
+        {
+            var token = Tokens.FirstOrDefault(f => f.Id == tokenId);
+            if (token == null)
+                throw new InvalidDomainDataException("invalid TokenId");
+
+            Tokens.Remove(token);
+        }
+
         private void Guard(string phoneNumber, string email, IUserDomainService userDomainService)
         {
             NullOrEmptyDomainDataException.CheckString(phoneNumber, nameof(phoneNumber));
@@ -142,7 +166,6 @@ namespace Shop.Domain.UserAggregate
                     throw new InvalidDomainDataException("ایمیل تکراری است");
                 }
             }
-
 
         }
 

@@ -62,5 +62,7 @@ namespace Shop.Query.Users
             };
         }
 
+        
+
     }
 }

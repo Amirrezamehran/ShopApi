@@ -5,8 +5,12 @@ using Common.Domain.ValueObjects;
 using Microsoft.AspNetCore.Mvc;
 using Shop.Api.Infrastructure.JwtUtility;
 using Shop.Api.ViewModels.Auth;
+using Shop.Application.Users.AddToken;
 using Shop.Application.Users.Register;
+using Shop.Application.Users.RemoveToken;
 using Shop.Presentation.Facade.Users;
+using Shop.Query.Users.DTOs;
+using UAParser;
 
 namespace Shop.Api.Controllers
 {
@@ -15,16 +19,17 @@ namespace Shop.Api.Controllers
         private readonly IUserFacade _userFacade;
         private readonly IConfiguration _configuration;
 
+
         public AuthController(IUserFacade userFacade, IConfiguration configuration)
         {
             _userFacade = userFacade;
             _configuration = configuration;
         }
 
-        [HttpPost("login")]
-        public async Task<ApiResult<string?>> Login(LoginViewModel loginViewModel)
-        {
 
+        [HttpPost("login")]
+        public async Task<ApiResult<LoginResultDto?>> Login(LoginViewModel loginViewModel)
+        {
             // میگیره نمایش میده JoinErrors این شرطم چک کردیم اگر وضعیتش معتبر نبود ارور مسیج هاشو از تابع
             // میگیره نشون میده CommandResult البته اینجا نیازی بهش نداریم چون خود برناممون پیغام خطاهارو از
             //if (ModelState.IsValid == false)
@@ -44,31 +49,55 @@ namespace Shop.Api.Controllers
             var user = await _userFacade.GetUserByPhoneNumber(loginViewModel.PhoneNumber);
             if (user == null)
             {
-                var result = OperationResult<string>.Error("کاربری با مشخصات وارد شده یافت نشد");
+                var result = OperationResult<LoginResultDto>.Error("کاربری با مشخصات وارد شده یافت نشد");
                 return CommandResult(result);
             }
 
             if (Sha256Hasher.IsCompare(user.Password, loginViewModel.Password) == false)
             {
-                var result = OperationResult<string>.Error("کاربری با مشخصات وارد شده یافت نشد");
+                var result = OperationResult<LoginResultDto>.Error("کاربری با مشخصات وارد شده یافت نشد");
                 return CommandResult(result);
             }
 
             if (user.IsActive == false)
             {
-                var result = OperationResult<string>.Error("حساب کاربری شما غیرفعال است");
+                var result = OperationResult<LoginResultDto>.Error("حساب کاربری شما غیرفعال است");
                 return CommandResult(result);
             }
 
-            var token = JwtTokenBuilder.BuildToken(user, _configuration);
-            return new ApiResult<string?>()
-            {
-                IsSuccess = true,
-                Data = token,
-                MetaData = new MetaData()
-            };
 
+            var loginResult = await AddTokenAndGenerateJwt(user);
+            return CommandResult(loginResult);
         }
+
+
+        private async Task<OperationResult<LoginResultDto?>> AddTokenAndGenerateJwt(UserDto user)
+        {
+            // است و کارش اینه که دیوایس کاربری که لاگین کرده رو میگیره بهش نشون میده UAParser از پکیج Parser این/
+            // در سه خط زیر هم ما اومدیم همینکارو کردیم
+            var uaParser = Parser.GetDefault();
+            var info = uaParser.Parse(HttpContext.Request.Headers["user-agent"]);
+            // این خط رو داخل متن توضیحات این پروژه توضیح دادیم چیکار میکنه
+            var device = $"{info.Device.Family}/{info.OS.Family} {info.OS.Major}/{info.OS.Minor} - {info.UA.Family}";
+
+            var token = JwtTokenBuilder.BuildToken(user, _configuration);
+            var refreshToken = Guid.NewGuid().ToString();
+
+            // اینجا توکن و رفرش توکن رو هش کردیم و اضافه کردیم داخل توکن هامون
+            var hashJwtToken = Sha256Hasher.Hash(token);
+            var hashRefreshToken = Sha256Hasher.Hash(refreshToken);
+            var tokenResult = await _userFacade.AddToken(new AddUserTokenCommand(user.Id, hashJwtToken, hashRefreshToken, DateTime.Now.AddDays(7), DateTime.Now.AddDays(8), device));
+
+            if (tokenResult.Status != OperationResultStatus.Success)
+                return OperationResult<LoginResultDto?>.Error();
+
+            return OperationResult<LoginResultDto?>.Success(new LoginResultDto()
+            {
+                Token = token,
+                RefreshToken = refreshToken
+            });
+        }
+
 
         [HttpPost("register")]
         public async Task<ApiResult> Register(RegisterViewModel register)
@@ -79,6 +108,27 @@ namespace Shop.Api.Controllers
         }
 
 
+        [HttpPost("refreshToken")]
+        public async Task<ApiResult<LoginResultDto?>> RefreshToken(string refreshToken)
+        {
+            var result = await _userFacade.GetUserTokenByRefreshToken(refreshToken);
 
+            if (result == null)
+                return CommandResult(OperationResult<LoginResultDto?>.NotFound());
+
+            if (result.TokenExpireDate > DateTime.Now)
+            {
+                return CommandResult(OperationResult<LoginResultDto>.Error("توکن هنوز منقضی نشده است"));
+            }
+
+            if (result.RefreshTokenExpireDate < DateTime.Now)
+            {
+                return CommandResult(OperationResult<LoginResultDto>.Error("زمان رفرش توکن به پایان رسیده است"));
+            }
+            var user = await _userFacade.GetUserById(result.UserId);
+            await _userFacade.RemoveToken(new RemoveUserTokenCommand(result.UserId, result.Id));
+            var loginResult = await AddTokenAndGenerateJwt(user);
+            return CommandResult(loginResult);
+        }
     }
 }

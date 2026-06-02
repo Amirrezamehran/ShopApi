@@ -105,6 +105,16 @@ namespace Shop.Infrastructure.Persistent.Ef.UserAggregate
                 option.HasIndex(b => b.UserId);
             });
 
+            builder.OwnsMany(b => b.Tokens, option =>
+            {
+                option.ToTable("Tokens", "user");
+                option.HasKey(b => b.Id);
+
+                option.Property(b => b.HashJwtToken).IsRequired().HasMaxLength(400);
+                option.Property(b => b.HashRefreshToken).IsRequired().HasMaxLength(400);
+                option.Property(b => b.Device).IsRequired().HasMaxLength(100);
+            });
+
         }
 
     }

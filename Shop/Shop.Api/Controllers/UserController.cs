@@ -20,6 +20,8 @@ namespace Shop.Api.Controllers
             _mapper = mapper;
         }
 
+        // به صورت خودکار میره از بادی این مقدار رو دریافت کنه و به خطا میخوره [FromQuery] اگر نگیم
+        // بره دنبالش بگرده URL میفرستیم برات یعنی داخل QueryParam باید حتما بگیم که این مقدار رو به صورت
         [HttpGet]
         public async Task<ApiResult<UserFilterResult>> GetUsers([FromQuery] UserFilterParams filterParams)
         {

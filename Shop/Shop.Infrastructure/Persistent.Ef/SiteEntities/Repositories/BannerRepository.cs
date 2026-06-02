@@ -9,5 +9,10 @@ namespace Shop.Infrastructure.Persistent.Ef.SiteEntities.Repositories
         public BannerRepository(ShopContext context) : base(context)
         {
         }
+
+        public void Remove(Banner banner)
+        {
+            throw new NotImplementedException();
+        }
     }
 }

@@ -2,6 +2,7 @@
 using MediatR;
 using Shop.Application.SiteEntities.Banners.Create;
 using Shop.Application.SiteEntities.Banners.Edit;
+using Shop.Application.SiteEntities.Banners.Remove;
 using Shop.Query.SiteEntities.Banners.GetById;
 using Shop.Query.SiteEntities.Banners.GetList;
 using Shop.Query.SiteEntities.DTOs;
@@ -26,6 +27,11 @@ namespace Shop.Presentation.Facade.SiteEntities.Banner
         public async Task<OperationResult> EditBanner(EditBannerCommand command)
         {
             return await _mediator.Send(command);
+        }
+
+        public async Task<OperationResult> RemoveBanner(long bannerId)
+        {
+            return await _mediator.Send(new RemoveBannerCommand(bannerId));
         }
 
         public async Task<BannerDto?> GetBannerById(long id)

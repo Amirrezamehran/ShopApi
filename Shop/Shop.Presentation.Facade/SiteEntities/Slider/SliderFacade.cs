@@ -2,9 +2,11 @@
 using MediatR;
 using Shop.Application.SiteEntities.Sliders.Create;
 using Shop.Application.SiteEntities.Sliders.Edit;
+using Shop.Application.SiteEntities.Sliders.Remove;
 using Shop.Query.SiteEntities.DTOs;
 using Shop.Query.SiteEntities.Sliders.GetById;
 using Shop.Query.SiteEntities.Sliders.GetList;
+using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace Shop.Presentation.Facade.SiteEntities.Slider
 {
@@ -25,6 +27,11 @@ namespace Shop.Presentation.Facade.SiteEntities.Slider
         public async Task<OperationResult> EditSlider(EditSliderCommand command)
         {
             return await _mediator.Send(command);
+        }
+
+        public async Task<OperationResult> RemoveSlider(long sliderId)
+        {
+            return await _mediator.Send(new RemoveSliderCommand(sliderId));
         }
 
         public async Task<SliderDto?> GetSliderById(long id)

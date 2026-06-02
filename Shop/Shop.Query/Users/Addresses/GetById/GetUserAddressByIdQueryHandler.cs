@@ -17,7 +17,7 @@ namespace Shop.Query.Users.Addresses.GetById
         public async Task<AddressDto?> Handle(GetUserAddressByIdQuery request, CancellationToken cancellationToken)
         {
             var sql = $"Select top 1 * from {_dapperContext.UserAddresses} where id=@id";
-            var context = _dapperContext.CreateConnection();
+            using var context = _dapperContext.CreateConnection();
             // برگردون AddressDto بهش گفتیم حتما از نوع
             return await context.QueryFirstOrDefaultAsync<AddressDto>(sql, new { id = request.AddressId});
         }

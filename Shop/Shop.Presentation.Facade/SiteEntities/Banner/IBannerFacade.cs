@@ -10,6 +10,7 @@ namespace Shop.Presentation.Facade.SiteEntities.Banner
         // Commands //
         Task<OperationResult> CreateBanner(CreateBannerCommand command);
         Task<OperationResult> EditBanner(EditBannerCommand command);
+        Task<OperationResult> RemoveBanner(long bannerId);
 
 
         // Queries //
