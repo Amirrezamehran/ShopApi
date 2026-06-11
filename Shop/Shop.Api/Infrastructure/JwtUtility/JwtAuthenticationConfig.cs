@@ -32,16 +32,22 @@ namespace Shop.Api.Infrastructure.JwtUtility
                 // توکن کاربر رو بگیریم httpContext وقتی اینو بذاریم میتونیم وقتی کاربر لاگین کرد از
                 // به شرطی که تو هدر هم ست شده باشه
                 option.SaveToken = true;
+                
+                // وقتی این رویداد رو مینویسیم دیگه فعال یا غیرفعال بودن کاربر فقط موقع لاگین چک نمیشه
+                // بلکن هم موقع لاگین چک میشه هم موقع استفاده از سیستم و با هر تابعی که فراخوانی میشه
+                // و یا هر ریکوئستی که کاربر ارسال میکنه میاد چک میکنه آیا کاربر فعاله آیا توکنش معتبره یا نه
+                option.Events = new JwtBearerEvents()
+                {
+                    // یک سری ایونت داره که به این صورت هرکدام کارهای متفاوتی انجام میدن که در قسمت 95 همه ایونت ها توضیح داده شده Jwt
 
-                //option.Events = new JwtBearerEvents()
-                //{
-                //    OnTokenValidated = async context =>
-                //    {
-                //        var customValidate = context.HttpContext.RequestServices
-                //            .GetRequiredService<CustomJwtValidation>();
-                //        await customValidate.Validate(context);
-                //    }
-                //};
+                    OnTokenValidated = async context =>
+                    {
+                        var customValidate = context.HttpContext.RequestServices
+                            .GetRequiredService<CustomJwtValidation>();
+                        await customValidate.Validate(context);
+                    }
+                };
+                
             });
 
         }

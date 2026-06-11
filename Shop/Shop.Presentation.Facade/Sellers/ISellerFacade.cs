@@ -15,5 +15,6 @@ namespace Shop.Presentation.Facade.Sellers
         // Queries //
         Task<SellerDto?> GetSellerById(long id);
         Task<SellerFilterResult> GetSellerByFilter(SellerFilterParams filterParams);
+        Task<SellerDto?> GetSellerByUserId(long userId);
     }
 }

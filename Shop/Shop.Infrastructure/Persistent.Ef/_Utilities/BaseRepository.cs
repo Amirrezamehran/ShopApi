@@ -43,18 +43,22 @@ namespace Shop.Infrastructure.Persistent.Ef._Utilities
         {
             await Context.Set<TEntity>().AddRangeAsync(entities);
         }
+
         public void Update(TEntity entity)
         {
             Context.Update(entity);
         }
+
         public async Task<int> Save()
         {
             return await Context.SaveChangesAsync();
         }
+
         public async Task<bool> ExistsAsync(Expression<Func<TEntity, bool>> expression)
         {
             return await Context.Set<TEntity>().AnyAsync(expression);
         }
+
         public bool Exists(Expression<Func<TEntity, bool>> expression)
         {
             return Context.Set<TEntity>().Any(expression);

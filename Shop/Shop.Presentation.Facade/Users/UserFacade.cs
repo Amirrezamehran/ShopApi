@@ -11,7 +11,8 @@ using Shop.Query.Users.DTOs;
 using Shop.Query.Users.GetByFilter;
 using Shop.Query.Users.GetById;
 using Shop.Query.Users.GetByPhoneNumber;
-using Shop.Query.Users.GetUserToken;
+using Shop.Query.Users.GetUserToken.GetByJwtToken;
+using Shop.Query.Users.GetUserToken.GetByRefreshToken;
 using static Microsoft.EntityFrameworkCore.DbLoggerCategory.Database;
 
 namespace Shop.Presentation.Facade.Users
@@ -76,6 +77,10 @@ namespace Shop.Presentation.Facade.Users
             return await _mediator.Send(new GetUserTokenByRefreshTokenQuery(hashRefreshToken));
         }
 
-        
+        public async Task<UserTokenDto?> GetUserTokenByJwtToken(string jwtToken)
+        {
+            var hashJwtToken = Sha256Hasher.Hash(jwtToken);
+            return await _mediator.Send(new GetUserTokenByJwtTokenQuery(hashJwtToken));
+        }
     }
 }

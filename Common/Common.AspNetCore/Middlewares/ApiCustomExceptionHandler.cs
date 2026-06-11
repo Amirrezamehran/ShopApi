@@ -34,7 +34,6 @@ public class ApiCustomExceptionHandlerMiddleware
         _logger = logger;
     }
 
-    // داخل توضیحات این پروژه صحبت کردم خیلی مهم هست Invoke راجب این
     public async Task Invoke(HttpContext context)
     {
         string message = null;

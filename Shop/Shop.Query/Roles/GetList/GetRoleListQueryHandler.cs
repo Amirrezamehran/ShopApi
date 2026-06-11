@@ -16,8 +16,8 @@ namespace Shop.Query.Roles.GetList
 
         public async Task<List<RoleDto>> Handle(GetRoleListQuery request, CancellationToken cancellationToken)
         {
-            var role = await _shopContext.Roles.OrderByDescending(r => r.Id).ToListAsync(cancellationToken);
-            return role.Map();
+            var role = await _shopContext.Roles.Select(r => r.Map()).ToListAsync(cancellationToken);
+            return role;
         }
     }
 }

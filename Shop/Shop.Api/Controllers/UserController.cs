@@ -1,6 +1,8 @@
 ﻿using AutoMapper;
 using Common.AspNetCore;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Shop.Api.Infrastructure.Security;
 using Shop.Application.Users.Create;
 using Shop.Application.Users.Edit;
 using Shop.Domain.RoleAggregate.Enums;
@@ -9,6 +11,7 @@ using Shop.Query.Users.DTOs;
 
 namespace Shop.Api.Controllers
 {
+    [Authorize]
     public class UserController : ApiController
     {
         private readonly IUserFacade _userFacade;
@@ -22,6 +25,7 @@ namespace Shop.Api.Controllers
 
         // به صورت خودکار میره از بادی این مقدار رو دریافت کنه و به خطا میخوره [FromQuery] اگر نگیم
         // بره دنبالش بگرده URL میفرستیم برات یعنی داخل QueryParam باید حتما بگیم که این مقدار رو به صورت
+        [PermissionChecker(Permission.User_Management)]
         [HttpGet]
         public async Task<ApiResult<UserFilterResult>> GetUsers([FromQuery] UserFilterParams filterParams)
         {
@@ -36,7 +40,7 @@ namespace Shop.Api.Controllers
             return QueryResult(result);
         }
 
-        
+        [PermissionChecker(Permission.User_Management)]
         [HttpGet("{userId}")]
         public async Task<ApiResult<UserDto?>> GetById(long userId)
         {
@@ -44,7 +48,7 @@ namespace Shop.Api.Controllers
             return QueryResult(result);
         }
 
-  
+        [PermissionChecker(Permission.User_Management)]
         [HttpPost]
         public async Task<ApiResult> Create(CreateUserCommand command)
         {
@@ -71,6 +75,7 @@ namespace Shop.Api.Controllers
         //    return CommandResult(result);
         //}
 
+        [PermissionChecker(Permission.User_Management)]
         [HttpPut]
         public async Task<ApiResult> Edit([FromForm] EditUserCommand command)
         {

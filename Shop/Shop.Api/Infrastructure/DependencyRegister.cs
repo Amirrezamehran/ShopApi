@@ -1,4 +1,6 @@
-﻿namespace Shop.Api.Infrastructure
+﻿using Shop.Api.Infrastructure.JwtUtility;
+
+namespace Shop.Api.Infrastructure
 {
     public static class DependencyRegister
     {
@@ -6,6 +8,7 @@
         {
             services.AddAutoMapper(typeof(MapperProfile).Assembly);
 
+            services.AddTransient<CustomJwtValidation>();
 
             // است Production یک پروتکل امنیتی است که بهتره فقط وقتی پروژه روی حالت Cors این
             // ها اضافه کنیمش Middleware و فقط برای دامنه ای که قراره ازش استفاده کنه بازش بکنیم و درنهایت به قسمت

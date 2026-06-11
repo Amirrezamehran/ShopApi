@@ -1,15 +1,19 @@
 ﻿using Common.AspNetCore;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Shop.Api.Infrastructure.Security;
 using Shop.Application.Products.AddImage;
 using Shop.Application.Products.Create;
 using Shop.Application.Products.Edit;
 using Shop.Application.Products.RemoveImage;
+using Shop.Domain.RoleAggregate.Enums;
 using Shop.Presentation.Facade.Products;
 using Shop.Query.Products.DTOs;
 
 namespace Shop.Api.Controllers
 {
-    
+    [PermissionChecker(Permission.CRUD_Product)]
+
     public class ProductController : ApiController
     {
         private readonly IProductFacade _productFacade;
@@ -28,6 +32,7 @@ namespace Shop.Api.Controllers
 
         // باید دریافت کنه QueryParams یعنی پارامترهای این ورودی رو از FromQuery اینجا نوشتیم
         // که در پروژه کوچک استاد اشرافی راجبش نوشتم و همینطور کلیپ شماره 88 دقیقه 3 به بعد میگه چی هست
+        [AllowAnonymous]
         [HttpGet]
         public async Task<ApiResult<ProductFilterResult>> GetProductByFilter([FromQuery]ProductFilterParams filterParams)
         {
@@ -35,6 +40,15 @@ namespace Shop.Api.Controllers
             return QueryResult(product);
         }
 
+        [AllowAnonymous]
+        [HttpGet("Shop")]
+        public async Task<ApiResult<ProductShopResult>> GetProductForShopFilter([FromQuery]ProductShopFilterParam filterParams)
+        {
+            var product = await _productFacade.GetProductForShop(filterParams);
+            return QueryResult(product);
+        }
+
+        [AllowAnonymous]
         [HttpGet("{slug}")]
         public async Task<ApiResult<ProductDto?>> GetProductBySlug(string slug)
         {

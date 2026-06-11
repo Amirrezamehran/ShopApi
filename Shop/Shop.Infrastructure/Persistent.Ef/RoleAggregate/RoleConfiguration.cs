@@ -12,7 +12,7 @@ namespace Shop.Infrastructure.Persistent.Ef.RoleAggregate
             builder.Property(b => b.Title)
                 .IsRequired()
                 .HasMaxLength(60);
-
+            
             builder.OwnsMany(b => b.Permissions, option =>
             {
                 option.ToTable("Permissions", "role");

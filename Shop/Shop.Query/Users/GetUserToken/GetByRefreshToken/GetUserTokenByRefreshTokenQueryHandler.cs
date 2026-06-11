@@ -3,7 +3,7 @@ using Dapper;
 using Shop.Infrastructure.Persistent.Dapper;
 using Shop.Query.Users.DTOs;
 
-namespace Shop.Query.Users.GetUserToken
+namespace Shop.Query.Users.GetUserToken.GetByRefreshToken
 {
     public class GetUserTokenByRefreshTokenQueryHandler : IQueryHandler<GetUserTokenByRefreshTokenQuery, UserTokenDto?>
     {

@@ -3,7 +3,10 @@ using Common.Application.FileUtil.Interfaces;
 using Common.Application.FileUtil.Services;
 using Common.AspNetCore;
 using Common.AspNetCore.Middlewares;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.OpenApi.Models;
+using Shop.Api.Infrastructure;
 using Shop.Api.Infrastructure.JwtUtility;
 using Shop.Config;
 
@@ -39,10 +42,41 @@ builder.Services.AddControllers().ConfigureApiBehaviorOptions(option =>
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
+
+
+// کنیم Authentication بتوانیم Swagger کل محتوای داخل این تابع برای اینه که داخل خود
+// استفاده کنیم PostMan که دیگه نیاز نباشه برای تست هامون از
+// ها بکنیم Api فقط کافیه هنگام اجرای برنامه توکن را در بخش مربوطه وارد کنیم و شروع به تست
+builder.Services.AddSwaggerGen(option =>
+{
+    var jwtSecurityScheme = new OpenApiSecurityScheme
+    {
+        Scheme = "bearer",
+        BearerFormat = "JWT",
+        Name = "JWT Authentication",
+        In = ParameterLocation.Header,
+        Type = SecuritySchemeType.Http,
+        Description = "Enter Token",
+
+        Reference = new OpenApiReference
+        {
+            Id = JwtBearerDefaults.AuthenticationScheme,
+            Type = ReferenceType.SecurityScheme
+        }
+    };
+
+    option.AddSecurityDefinition(jwtSecurityScheme.Reference.Id, jwtSecurityScheme);
+
+    option.AddSecurityRequirement(new OpenApiSecurityRequirement
+    {
+        { jwtSecurityScheme, Array.Empty<string>() }
+    });
+});
+
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
 builder.Services.RegisterShopDependency(connectionString);
+builder.Services.RegisterApiDependency();
 CommonBootstrapper.Init(builder.Services);
 builder.Services.AddTransient<IFileService, FileService>();
 

@@ -20,6 +20,7 @@ namespace Shop.Presentation.Facade.Products
         Task<ProductDto?> GetProductById(long id);
         Task<ProductDto?> GetProductBySlug(string slug);
         Task<ProductFilterResult> GetProductByFilter(ProductFilterParams filterParams);
+        Task<ProductShopResult> GetProductForShop(ProductShopFilterParam filterParams);
 
     }
 }

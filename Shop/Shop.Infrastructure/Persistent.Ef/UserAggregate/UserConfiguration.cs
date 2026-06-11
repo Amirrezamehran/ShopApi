@@ -34,25 +34,6 @@ namespace Shop.Infrastructure.Persistent.Ef.UserAggregate
                 .HasMaxLength(50);
 
 
-
-            //builder.OwnsMany(b => b.Token, option =>
-            //{
-            //    option.ToTable("Tokens", "user");
-            //    option.HasKey(b => b.Id);
-
-            //    option.Property(b => b.HashJwtToken)
-            //        .IsRequired()
-            //        .HasMaxLength(250);
-
-            //    option.Property(b => b.HashRefreshToken)
-            //        .IsRequired()
-            //        .HasMaxLength(250);
-
-            //    option.Property(b => b.Device)
-            //        .IsRequired()
-            //        .HasMaxLength(100);
-            //});
-
             builder.OwnsMany(b => b.Addresses, option =>
             {
                 option.HasIndex(b => b.UserId);

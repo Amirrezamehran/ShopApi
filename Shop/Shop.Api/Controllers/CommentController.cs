@@ -1,8 +1,11 @@
 ﻿using Common.AspNetCore;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
+using Shop.Api.Infrastructure.Security;
 using Shop.Application.Comments.ChangeStatus;
 using Shop.Application.Comments.Create;
 using Shop.Application.Comments.Edit;
+using Shop.Domain.RoleAggregate.Enums;
 using Shop.Presentation.Facade.Comments;
 using Shop.Query.Comments.DTOs;
 using System.Runtime.CompilerServices;
@@ -18,7 +21,7 @@ namespace Shop.Api.Controllers
             _commentFacade = commentFacade;
         }
 
-
+        [PermissionChecker(Permission.Comment_Management)]
         [HttpGet("{commentId}")]
         public async Task<ApiResult<CommentDto?>> GetCommentById(long commentId)
         {
@@ -26,6 +29,7 @@ namespace Shop.Api.Controllers
             return QueryResult(comment);
         }
 
+        [PermissionChecker(Permission.Comment_Management)]
         [HttpGet]
         public async Task<ApiResult<CommentFilterResult>> GetCommentByFilter([FromQuery]CommentFilterParams filterParams)
         {
@@ -34,6 +38,7 @@ namespace Shop.Api.Controllers
         }
 
         [HttpPost]
+        [Authorize]
         public async Task<ApiResult> CreateComment(CreateCommentCommand command)
         {
             var comment = await _commentFacade.CreateComment(command);
@@ -47,6 +52,8 @@ namespace Shop.Api.Controllers
             return CommandResult(comment);
         }
 
+        
+        [PermissionChecker(Permission.Comment_Management)] // یعنی باید ادمین اجازه بده تا بتونه کامنت بذاره
         [HttpPut("changeStatus")]
         public async Task<ApiResult> ChangeStatusComment(ChangeCommentStatusCommand command)
         {

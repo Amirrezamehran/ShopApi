@@ -23,7 +23,7 @@ namespace Shop.Query.Users
                 IsActive = user.IsActive,
                 Roles = user.Roles.Select(r => new UserRoleDto()
                 {
-                    RoleId = r.Id,
+                    RoleId = r.RoleId,
                     RoleTitle = ""
                 }).ToList()
             };

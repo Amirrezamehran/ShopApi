@@ -2,6 +2,8 @@
 using Common.Application.SecurityUtil;
 using Common.AspNetCore;
 using Common.Domain.ValueObjects;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Shop.Api.Infrastructure.JwtUtility;
 using Shop.Api.ViewModels.Auth;
@@ -130,5 +132,25 @@ namespace Shop.Api.Controllers
             var loginResult = await AddTokenAndGenerateJwt(user);
             return CommandResult(loginResult);
         }
+
+
+        // دسترسی داشته باشد Logout رو گذاشتیم چون کاربر حتما باید لاگین کند تا به Authorize این
+        // و اگر لاگین نکرده باشد اصلا نیازی هم به خروج ندارد
+        [Authorize]
+        [HttpDelete("logout")]
+        public async Task<ApiResult> Logout()
+        {
+            var token = await HttpContext.GetTokenAsync("access_token");
+            var result = await _userFacade.GetUserTokenByJwtToken(token);
+
+            if (result == null)
+                return CommandResult(OperationResult.NotFound());
+
+            await _userFacade.RemoveToken(new RemoveUserTokenCommand(result.UserId, result.Id));
+            return CommandResult(OperationResult.Success());
+        }
+
+
+
     }
 }
