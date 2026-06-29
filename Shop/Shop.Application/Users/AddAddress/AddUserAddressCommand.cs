@@ -12,12 +12,11 @@ namespace Shop.Application.Users.AddAddress
         public string PostalAddress { get; private set; }
         public string Name { get; private set; }
         public string Family { get; private set; }
-        public string FullName { get; private set; }
         public PhoneNumber PhoneNumber { get; private set; }
         public string NationalCode { get; private set; }
 
         public AddUserAddressCommand(long userId, string province, string city, string postalCode, string postalAddress,
-            string name, string family, string fullName, PhoneNumber phoneNumber, string nationalCode)
+            string name, string family, PhoneNumber phoneNumber, string nationalCode)
         {
             UserId = userId;
             Province = province;
@@ -26,7 +25,6 @@ namespace Shop.Application.Users.AddAddress
             PostalAddress = postalAddress;
             Name = name;
             Family = family;
-            FullName = fullName;
             PhoneNumber = phoneNumber;
             NationalCode = nationalCode;
         }

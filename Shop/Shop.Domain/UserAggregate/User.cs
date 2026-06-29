@@ -45,6 +45,12 @@ namespace Shop.Domain.UserAggregate
 
 
 
+        public void ChangePassword(string newPassword)
+        {
+            NullOrEmptyDomainDataException.CheckString(newPassword, nameof(newPassword));
+            Password = newPassword;
+        }
+
         public static User RegisterUser(string phoneNumber, string password, IUserDomainService userDomainService)
         {
             return new User("", "", phoneNumber, null, password, Gender.None, userDomainService);
@@ -132,6 +138,20 @@ namespace Shop.Domain.UserAggregate
                 throw new InvalidDomainDataException("invalid TokenId");
 
             Tokens.Remove(token);
+        }
+
+        public void SetActiveAddress(long addressId)
+        {
+            var currentAddress = Addresses.FirstOrDefault(ad => ad.Id == addressId);
+            if (currentAddress == null)
+                throw new NullOrEmptyDomainDataException("Address Not Found");
+
+            foreach (var address in Addresses)
+            {
+                address.SetDeActive();
+            }
+
+            currentAddress.SetActive();
         }
 
         private void Guard(string phoneNumber, string email, IUserDomainService userDomainService)

@@ -19,7 +19,7 @@ namespace Shop.Query.Users.Addresses.GetList
             var sql = $"Select * from {_dapperContext.UserAddresses} where userId=@userId";
             using var context = _dapperContext.CreateConnection();
             // برگردون AddressDto بهش گفتیم حتما از نوع
-            var result = await context.QueryAsync<AddressDto>(sql, new { id = request.UserId });
+            var result = await context.QueryAsync<AddressDto>(sql, new { userId = request.UserId });
             return result.ToList();
         }
     }

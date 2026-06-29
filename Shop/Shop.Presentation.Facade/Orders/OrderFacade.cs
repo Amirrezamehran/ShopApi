@@ -8,6 +8,7 @@ using Shop.Application.Orders.RemoveItem;
 using Shop.Query.Orders.DTOs;
 using Shop.Query.Orders.GetByFilter;
 using Shop.Query.Orders.GetById;
+using Shop.Query.Orders.GetCurrent;
 
 namespace Shop.Presentation.Facade.Orders
 {
@@ -53,6 +54,11 @@ namespace Shop.Presentation.Facade.Orders
         public async Task<OrderDto?> GetOrderById(long id)
         {
             return await _mediator.Send(new GetOrderByIdQuery(id));
+        }
+
+        public async Task<OrderDto?> GetCurrentOrder(long userId)
+        {
+            return await _mediator.Send(new GetCurrentUserOrderQuery(userId));
         }
     }
 }

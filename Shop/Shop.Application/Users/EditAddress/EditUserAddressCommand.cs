@@ -13,13 +13,13 @@ namespace Shop.Application.Users.EditAddress
         public string PostalAddress { get; private set; }
         public string Name { get; private set; }
         public string Family { get; private set; }
-        public string FullName { get; private set; }
         public PhoneNumber PhoneNumber { get; private set; }
         public string NationalCode { get; private set; }
 
-        public EditUserAddressCommand(long userId, string province, string city, string postalCode, string postalAddress,
-            string name, string family, string fullName, PhoneNumber phoneNumber, string nationalCode)
+        public EditUserAddressCommand(long id, long userId, string province, string city, string postalCode, string postalAddress,
+            string name, string family, PhoneNumber phoneNumber, string nationalCode)
         {
+            Id = id;
             UserId = userId;
             Province = province;
             City = city;
@@ -27,7 +27,6 @@ namespace Shop.Application.Users.EditAddress
             PostalAddress = postalAddress;
             Name = name;
             Family = family;
-            FullName = fullName;
             PhoneNumber = phoneNumber;
             NationalCode = nationalCode;
         }

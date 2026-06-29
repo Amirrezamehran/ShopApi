@@ -78,9 +78,15 @@ namespace Shop.Api.Controllers
             // است و کارش اینه که دیوایس کاربری که لاگین کرده رو میگیره بهش نشون میده UAParser از پکیج Parser این/
             // در سه خط زیر هم ما اومدیم همینکارو کردیم
             var uaParser = Parser.GetDefault();
-            var info = uaParser.Parse(HttpContext.Request.Headers["user-agent"]);
-            // این خط رو داخل متن توضیحات این پروژه توضیح دادیم چیکار میکنه
-            var device = $"{info.Device.Family}/{info.OS.Family} {info.OS.Major}/{info.OS.Minor} - {info.UA.Family}";
+            var header = HttpContext.Request.Headers["user-agent"].ToString();
+            var device = "Windows";
+
+            if (header != null)
+            {
+                var info = uaParser.Parse(header);
+                // این خط رو داخل متن توضیحات این پروژه توضیح دادیم چیکار میکنه
+                device = $"{info.Device.Family}/{info.OS.Family} {info.OS.Major}/{info.OS.Minor} - {info.UA.Family}";
+            }
 
             var token = JwtTokenBuilder.BuildToken(user, _configuration);
             var refreshToken = Guid.NewGuid().ToString();

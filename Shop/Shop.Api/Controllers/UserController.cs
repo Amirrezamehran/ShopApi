@@ -3,6 +3,8 @@ using Common.AspNetCore;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Shop.Api.Infrastructure.Security;
+using Shop.Api.ViewModels.Users;
+using Shop.Application.Users.ChangePassword;
 using Shop.Application.Users.Create;
 using Shop.Application.Users.Edit;
 using Shop.Domain.RoleAggregate.Enums;
@@ -56,24 +58,24 @@ namespace Shop.Api.Controllers
             return CommandResult(result);
         }
 
-        //[HttpPut("ChangePassword")]
-        //public async Task<ApiResult> ChangePassword(ChangePasswordViewModel command)
-        //{
-        //    var changePasswordModel = _mapper.Map<ChangeUserPasswordCommand>(command);
-        //    changePasswordModel.UserId = User.GetUserId();
-        //    var result = await _userFacade.ChangePassword(changePasswordModel);
-        //    return CommandResult(result);
-        //}
+        [HttpPut("ChangePassword")]
+        public async Task<ApiResult> ChangePassword(ChangePasswordViewModel command)
+        {
+            var changePasswordModel = _mapper.Map<ChangeUserPasswordCommand>(command);
+            changePasswordModel.UserId = User.GetUserId();
+            var result = await _userFacade.ChangePassword(changePasswordModel);
+            return CommandResult(result);
+        }
 
-        //[HttpPut("Current")]
-        //public async Task<ApiResult> EditUser([FromForm] EditUserViewModel command)
-        //{
-        //    var commandModel = new EditUserCommand(User.GetUserId(), command.Avatar, command.Name, command.Family,
-        //        command.PhoneNumber, command.Email, command.Gender);
+        [HttpPut("Current")]
+        public async Task<ApiResult> EditUser([FromForm] EditUserViewModel command)
+        {
+            var commandModel = new EditUserCommand(User.GetUserId(), command.Avatar, command.Name, command.Family,
+                command.PhoneNumber, command.Email, command.Gender);
 
-        //    var result = await _userFacade.EditUser(commandModel);
-        //    return CommandResult(result);
-        //}
+            var result = await _userFacade.EditUser(commandModel);
+            return CommandResult(result);
+        }
 
         [PermissionChecker(Permission.User_Management)]
         [HttpPut]

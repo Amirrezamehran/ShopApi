@@ -30,6 +30,13 @@ namespace Shop.Api.Controllers
             return QueryResult(order);
         }
 
+        [HttpGet("current")]
+        public async Task<ApiResult<OrderDto?>> GetOrderById()
+        {
+            var order = await _orderFacade.GetCurrentOrder(User.GetUserId());
+            return QueryResult(order);
+        }
+
         [PermissionChecker(Permission.Order_Management)]
         [HttpGet]
         public async Task<ApiResult<OrderFilterResult>> GetOrderByFilter([FromQuery]OrderFilterParams filterParams)
@@ -70,6 +77,13 @@ namespace Shop.Api.Controllers
         public async Task<ApiResult> RemoveOrder(RemoveOrderItemCommand command)
         {
             var order = await _orderFacade.RemoveOrder(command);
+            return CommandResult(order);
+        }
+
+        [HttpDelete("orderItem{itemId}")]
+        public async Task<ApiResult> RemoveOrderItem(long itemId)
+        {
+            var order = await _orderFacade.RemoveOrder(new RemoveOrderItemCommand(User.GetUserId(), itemId));
             return CommandResult(order);
         }
 

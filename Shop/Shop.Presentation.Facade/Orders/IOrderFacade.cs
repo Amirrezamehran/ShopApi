@@ -20,6 +20,7 @@ namespace Shop.Presentation.Facade.Orders
 
         // Queries //
         Task<OrderDto?> GetOrderById(long id);
+        Task<OrderDto?> GetCurrentOrder(long userId);
         Task<OrderFilterResult> GetOrderByFilter(OrderFilterParams filterParams);
     }
 }

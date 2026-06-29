@@ -1,11 +1,13 @@
 ﻿using AutoMapper;
 using Common.AspNetCore;
+using Common.Domain.ValueObjects;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Shop.Api.ViewModels.Users;
 using Shop.Application.Users.AddAddress;
 using Shop.Application.Users.DeleteAddress;
 using Shop.Application.Users.EditAddress;
+using Shop.Application.Users.SetActiveAddress;
 using Shop.Presentation.Facade.Users.Addresses;
 using Shop.Query.Users.DTOs;
 
@@ -43,8 +45,10 @@ namespace Shop.Api.Controllers
         [HttpPost]
         public async Task<ApiResult> AddAddress(AddUserAddressViewModel viewModel)
         {
-            var command = _mapper.Map<AddUserAddressCommand>(viewModel);
-            command.UserId = User.GetUserId();
+            var command = new AddUserAddressCommand(User.GetUserId(), viewModel.Province, viewModel.City, viewModel.PostalCode
+                                        ,viewModel.PostalAddress, viewModel.Name, viewModel.Family
+                                        ,new PhoneNumber(viewModel.PhoneNumber), viewModel.NationalCode);
+            
             var result = await _userAddress.AddUserAddress(command);
             return CommandResult(result);
         }
@@ -52,8 +56,10 @@ namespace Shop.Api.Controllers
         [HttpPut]
         public async Task<ApiResult> Edit(EditUserAddressViewModel viewModel)
         {
-            var command = _mapper.Map<EditUserAddressCommand>(viewModel);
-            command.UserId = User.GetUserId();
+            var command = new EditUserAddressCommand(viewModel.Id, User.GetUserId(), viewModel.Province, viewModel.City, viewModel.PostalCode
+                                        , viewModel.PostalAddress, viewModel.Name, viewModel.Family
+                                        , new PhoneNumber(viewModel.PhoneNumber), viewModel.NationalCode);
+            
             var result = await _userAddress.EditUserAddress(command);
             return CommandResult(result);
         }
@@ -65,13 +71,13 @@ namespace Shop.Api.Controllers
             return CommandResult(result);
         }
 
-        //[HttpPut("SetActiveAddress/{addressId}")]
-        //public async Task<ApiResult> SetAddressActive(long addressId)
-        //{
-        //    var command = new SetActiveUserAddressCommand(User.GetUserId(), addressId);
+        [HttpPut("SetActiveAddress/{addressId}")]
+        public async Task<ApiResult> SetAddressActive(long addressId)
+        {
+            var command = new SetActiveUserAddressCommand(User.GetUserId(), addressId);
 
-        //    var result = await _userAddress.SetActiveAddress(command);
-        //    return CommandResult(result);
-        //}
+            var result = await _userAddress.SetActiveAddress(command);
+            return CommandResult(result);
+        }
     }
 }

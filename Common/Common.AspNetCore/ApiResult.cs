@@ -28,7 +28,7 @@ namespace Common.AspNetCore
         BadRequest = 3,
         LogicError = 4,
         UnAuthorize = 5,
-        ServerError
+        ServerError = 6
     }
 
 }

@@ -1,5 +1,6 @@
 ﻿using Common.Application;
 using Shop.Application.Users.AddToken;
+using Shop.Application.Users.ChangePassword;
 using Shop.Application.Users.ChargeWallet;
 using Shop.Application.Users.Create;
 using Shop.Application.Users.Edit;
@@ -18,6 +19,7 @@ namespace Shop.Presentation.Facade.Users
         Task<OperationResult> ChargeWallet(ChargeUserWalletCommand command);
         Task<OperationResult> AddToken(AddUserTokenCommand command);
         Task<OperationResult> RemoveToken(RemoveUserTokenCommand command);
+        Task<OperationResult> ChangePassword(ChangeUserPasswordCommand command);
 
 
         // Queries //
