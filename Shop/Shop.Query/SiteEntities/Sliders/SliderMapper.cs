@@ -26,7 +26,7 @@ namespace Shop.Query.SiteEntities.Sliders
         {
             List<SliderDto> model = new List<SliderDto>();
 
-            model.ForEach(s =>
+            slider.ForEach(s =>
             {
                 model.Add(new SliderDto
                 {

@@ -1,5 +1,4 @@
-﻿
-using Common.Application;
+﻿using Common.Application;
 using Microsoft.AspNetCore.Http;
 
 namespace Shop.Application.SiteEntities.Sliders.Remove

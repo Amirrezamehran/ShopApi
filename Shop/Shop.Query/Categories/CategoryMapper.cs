@@ -7,6 +7,9 @@ namespace Shop.Query.Categories
     {
         public static CategoryDto Map(this Category? category)
         {
+            if (category == null)
+                return null;
+
             return new CategoryDto()
             {
                 Id = category.Id,

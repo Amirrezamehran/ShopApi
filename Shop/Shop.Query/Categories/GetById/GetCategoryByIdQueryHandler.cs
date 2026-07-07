@@ -13,7 +13,7 @@ namespace Shop.Query.Categories.GetById
         {
             _context = context;
         }
-
+        
         public async Task<CategoryDto> Handle(GetCategoryByIdQuery request, CancellationToken cancellationToken)
         {
             var model = await _context.Categories.FirstOrDefaultAsync(cat => cat.Id == request.categoryId, cancellationToken);

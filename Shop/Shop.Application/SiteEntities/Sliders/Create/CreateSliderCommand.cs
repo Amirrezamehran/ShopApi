@@ -7,15 +7,10 @@ namespace Shop.Application.SiteEntities.Sliders.Create
 {
     public class CreateSliderCommand : IBaseCommand
     {
-        public string Link { get; private set; }
-        public IFormFile ImageFile { get; private set; }
-        public string Title { get; private set; }
-
-        public CreateSliderCommand(string link, IFormFile imageFile, string title)
-        {
-            Link = link;
-            ImageFile = imageFile;
-            Title = title;
-        }
+        // مقداردهی کنیم Constructor کنیم و داخل Private Set اینجا اگر اینارو
+        // هست خطا میده و دلیلشم داخل فایل توضیحات هر دو پروژه نوشتم Razor Page به مشکل میخوریم و برنامه سمت ویو که همون
+        public string Link { get; set; }
+        public IFormFile ImageFile { get; set; }
+        public string Title { get; set; }
     }
 }

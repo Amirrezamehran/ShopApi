@@ -13,7 +13,7 @@ namespace Shop.Infrastructure.Persistent.Ef.SiteEntities.Repositories
 
         public void Remove(Slider slider)
         {
-            throw new NotImplementedException();
+            Context.Sliders.Remove(slider);
         }
     }
 }

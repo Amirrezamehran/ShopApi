@@ -33,12 +33,12 @@ namespace Shop.Api.Controllers
 
         [AllowAnonymous]
         [HttpGet("{id}")]
-        public async Task<ApiResult<CategoryDto>> GetCategoryById(long categoryId)
+        public async Task<ApiResult<CategoryDto>> GetCategoryById(long id)
         {
-            var result = await _categoryFacade.GetCategoryById(categoryId);
+            var result = await _categoryFacade.GetCategoryById(id);
             return QueryResult(result);
         }
-
+        
         [HttpGet("getChild/{parentId}")]
         public async Task<ApiResult<List<ChildCategoryDto>>> GetCategoryByParentId(long parentId)
         {

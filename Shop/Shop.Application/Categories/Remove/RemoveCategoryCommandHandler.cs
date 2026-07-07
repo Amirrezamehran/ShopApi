@@ -16,7 +16,10 @@ namespace Shop.Application.Categories.Remove
         {
             var result = await _categoryRepository.DeleteCategory(request.CategoryId);
             if (result)
+            {
+                await _categoryRepository.Save();
                 return OperationResult.Success();
+            }
 
             return OperationResult.Error("امکان حذف این دسته بندی وجود ندارد");
         }

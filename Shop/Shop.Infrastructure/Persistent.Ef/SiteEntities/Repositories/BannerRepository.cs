@@ -12,7 +12,7 @@ namespace Shop.Infrastructure.Persistent.Ef.SiteEntities.Repositories
 
         public void Remove(Banner banner)
         {
-            throw new NotImplementedException();
+            Context.Banners.Remove(banner);
         }
     }
 }

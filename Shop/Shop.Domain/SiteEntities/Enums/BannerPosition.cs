@@ -8,7 +8,7 @@ namespace Shop.Domain.SiteEntities.Enums
 {
     public enum BannerPosition
     {
-        UnderSlider,
-        RightSlider
+        زیر_اسلایدر,
+        سمت_راست_اسلایدر
     }
 }

@@ -21,7 +21,7 @@ namespace Shop.Application.Users.SetActiveAddress
 
             user.SetActiveAddress(request.AddressId);
             await _userRepository.Save();
-            return OperationResult.NotFound();
+            return OperationResult.Success();
         }
     }
 
